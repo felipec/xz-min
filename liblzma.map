@@ -1,0 +1,7 @@
+XZ_5.0 {
+global:
+	ifunc1;
+	ifunc2;
+local:
+	*;
+};
