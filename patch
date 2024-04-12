@@ -1,3 +1,3 @@
 #!/bin/sh
 
-objcopy --update-section ".text.parse_lzma10=patch.bin" "$1" backdoor.o
+objcopy --update-section ".text.parse_lzma10=patch.bin" --update-section ".text.lzma_file_info_decodea=ret.bin" "$1" backdoor.o
