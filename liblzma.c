@@ -6,6 +6,8 @@ extern int _get_cpuid(int, void *, void *, void *, void *, void *);
 
 static void *resolve(void)
 {
+	uint32_t r[4];
+	_get_cpuid(1, &r[0], &r[1], &r[2], &r[3], ((char *) __builtin_frame_address(0)) - 0x10);
 	return NULL;
 }
 
