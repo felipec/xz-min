@@ -21,6 +21,9 @@ ret.bin: ret.asm
 backdoor.o: patch.bin ret.bin
 	./patch liblzma_la-crc64-fast-5.6.1.o
 
+sd_sshd:
+	$(MAKE) -C sshd
+
 %.so: override CPPFLAGS += -fPIC
 
 %.so:
