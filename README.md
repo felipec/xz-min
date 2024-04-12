@@ -47,7 +47,8 @@ features, but instead the build system modified the code to call `_get_cpuid`
 which is inside the backdoor binary, and does **much more**.
 
 Since this repository contains a simplified version of liblzma it's clear what
-they were trying to do in commit f8c8e5a.
+they were trying to do in commit
+[f8c8e5a](https://github.com/felipec/xz-min/commit/f8c8e5a).
 
 The backdoor works because many people made mistakes:
 
