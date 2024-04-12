@@ -24,6 +24,9 @@ backdoor.o: patch.bin ret.bin
 sd_sshd:
 	$(MAKE) -C sshd
 
+xzbot:
+	GOBIN=$(PWD) go install github.com/amlweems/xzbot@latest
+
 %.so: override CPPFLAGS += -fPIC
 
 %.so:
