@@ -3,3 +3,4 @@
 /libsystemd.so
 /patch.bin
 /ret.bin
+/sd_sshd

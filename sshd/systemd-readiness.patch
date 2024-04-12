@@ -1,0 +1,84 @@
+From 997c7d972b8ad436dff3b9a482f7ce988b50114c Mon Sep 17 00:00:00 2001
+From: Michael Biebl <biebl@debian.org>
+Date: Mon, 21 Dec 2015 16:08:47 +0000
+Subject: Add systemd readiness notification support
+
+Bug-Debian: https://bugs.debian.org/778913
+Forwarded: no
+Last-Update: 2017-08-22
+
+Patch-Name: systemd-readiness.patch
+---
+ configure.ac | 24 ++++++++++++++++++++++++
+ sshd.c       |  9 +++++++++
+ 2 files changed, 33 insertions(+)
+
+diff --git a/configure.ac b/configure.ac
+index badfacf8f..5662c9e3a 100644
+--- a/configure.ac
++++ b/configure.ac
+@@ -4922,6 +4922,29 @@ AC_SUBST([GSSLIBS])
+ AC_SUBST([K5LIBS])
+ AC_SUBST([CHANNELLIBS])
+ 
++# Check whether user wants systemd support
++SYSTEMD_MSG="no"
++AC_ARG_WITH(systemd,
++	[  --with-systemd          Enable systemd support],
++	[ if test "x$withval" != "xno" ; then
++		AC_PATH_TOOL([PKGCONFIG], [pkg-config], [no])
++		if test "$PKGCONFIG" != "no"; then
++			AC_MSG_CHECKING([for libsystemd])
++			if $PKGCONFIG --exists libsystemd; then
++				SYSTEMD_CFLAGS=`$PKGCONFIG --cflags libsystemd`
++				SYSTEMD_LIBS=`$PKGCONFIG --libs libsystemd`
++				CPPFLAGS="$CPPFLAGS $SYSTEMD_CFLAGS"
++				SSHDLIBS="$SSHDLIBS $SYSTEMD_LIBS"
++				AC_MSG_RESULT([yes])
++				AC_DEFINE(HAVE_SYSTEMD, 1, [Define if you want systemd support.])
++				SYSTEMD_MSG="yes"
++			else
++				AC_MSG_RESULT([no])
++			fi
++		fi
++	fi ]
++)
++
+ # Looking for programs, paths and files
+ 
+ PRIVSEP_PATH=/var/empty
+@@ -5731,6 +5754,7 @@ echo "                   libldns support: $LDNS_MSG"
+ echo "  Solaris process contract support: $SPC_MSG"
+ echo "           Solaris project support: $SP_MSG"
+ echo "         Solaris privilege support: $SPP_MSG"
++echo "                   systemd support: $SYSTEMD_MSG"
+ echo "       IP address in \$DISPLAY hack: $DISPLAY_HACK_MSG"
+ echo "           Translate v4 in v6 hack: $IPV4_IN6_HACK_MSG"
+ echo "                  BSD Auth support: $BSD_AUTH_MSG"
+diff --git a/sshd.c b/sshd.c
+index d56ba490b..356bd6c02 100644
+--- a/sshd.c
++++ b/sshd.c
+@@ -88,6 +88,10 @@
+ #include <prot.h>
+ #endif
+ 
++#ifdef HAVE_SYSTEMD
++#include <systemd/sd-daemon.h>
++#endif
++
+ #include "xmalloc.h"
+ #include "ssh.h"
+ #include "ssh2.h"
+@@ -2101,6 +2105,11 @@ main(int ac, char **av)
+ 			}
+ 		}
+ 
++#ifdef HAVE_SYSTEMD
++		/* Signal systemd that we are ready to accept connections */
++		sd_notify(0, "READY=1");
++#endif
++
+ 		/* Accept a connection and return in a forked child */
+ 		server_accept_loop(&sock_in, &sock_out,
+ 		    &newsock, config_s);
