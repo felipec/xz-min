@@ -57,9 +57,9 @@ The backdoor works because many people made mistakes:
     code that is generated for tarballs and nobody looks at.
  2. The developers of systemd did not design it with modularity in mind, so the
     singular libsystemd library provides a ton of functionality most people
-    won't uses has nothing to do with an init system, like process compressed
-    system logs. Therefore everyone that links to libsystemd links to liblzma
-    as well.
+    won't use and has nothing to do with an init system, like process
+    compressed system logs. Therefore everyone that links to libsystemd links
+    to liblzma as well.
  3. Maintainers patched `sshd` to link to libsystemd for a minor feature.
 
 The backdoor binary is incredibly complex and it will take a while to properly
