@@ -1,3 +1,4 @@
 *.o
 /liblzma.so
 /libsystemd.so
+/patch.bin
