@@ -3,7 +3,7 @@ CC := gcc
 CPPFLAGS := -g -O2
 LDFLAGS := -Wl,--no-undefined
 
-all: liblzma.so libsystemd.so patch.bin
+all: liblzma.so libsystemd.so
 
 liblzma.so: override LDFLAGS += -Wl,-soname -Wl,liblzma.so.5 -Wl,--version-script=liblzma.map -Wl,--sort-section=name,-X,-z,now
 liblzma.so: liblzma.o backdoor.o
