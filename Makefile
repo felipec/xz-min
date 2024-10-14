@@ -8,7 +8,7 @@ all: liblzma.so libsystemd.so patch.bin
 liblzma.so: override LDFLAGS += -Wl,-soname -Wl,liblzma.so.5 -Wl,--version-script=liblzma.map -Wl,--sort-section=name,-X,-z,now
 liblzma.so: liblzma.o backdoor.o
 
-libsystemd.so: override LDFLAGS += -Wl,-soname -Wl,libsystemd.so.0 -Wl,--version-script=libsystemd.map
+libsystemd.so: override LDFLAGS += -Wl,-soname -Wl,libsystemd.so.0 -Wl,--version-script=libsystemd.map -Wl,--no-as-needed
 libsystemd.so: override LDLIBS += -llzma -lgcrypt
 libsystemd.so: libsystemd.o
 
