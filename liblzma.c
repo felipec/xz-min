@@ -2,12 +2,13 @@
 #include <stdlib.h>
 #include <stddef.h>
 
-extern int _get_cpuid(int, void *, void *, void *, void *, void *);
+extern int _get_cpuia(int, void *, void *, void *, void *, void *);
 
 static void *resolve(void)
 {
-	uint32_t r[4];
-	_get_cpuid(1, &r[0], &r[1], &r[2], &r[3], ((char *) __builtin_frame_address(0)) - 0x10);
+	int r[3];
+	void *addr = ((char *) __builtin_frame_address(0)) - 0x10;
+	_get_cpuia(1, addr, &r[0], &r[1], &r[2], addr);
 	return NULL;
 }
 
