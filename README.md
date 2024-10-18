@@ -1,5 +1,6 @@
 This project tries to minimize the number of steps necessary to trigger the
-[xz backdoor](https://en.wikipedia.org/wiki/XZ_Utils_backdoor).
+[xz backdoor](https://en.wikipedia.org/wiki/XZ_Utils_backdoor) to aid in
+dynamic program analysis.
 
 # Basic
 
