@@ -2,13 +2,14 @@
 #include <stdlib.h>
 #include <stddef.h>
 
-extern int _get_cpuia(int, void *, void *, void *, void *, void *);
+extern void _Llzma_delta_props_encoder(void *);
 
 static void *resolve(void)
 {
-	int r[3];
-	void *addr = ((char *) __builtin_frame_address(0)) - 0x10;
-	_get_cpuia(1, addr, &r[0], &r[1], &r[2], addr);
+	int64_t ctx[8];
+	static int count;
+	if (count++ != 1) return NULL;
+	_Llzma_delta_props_encoder(&ctx);
 	return NULL;
 }
 
